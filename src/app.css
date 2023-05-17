@@ -18,33 +18,56 @@
 }
 
 .page-content {
-	background-color: white;
 	position: relative;
+	/* background-color: rgb(29, 30, 40); */
 }
 
 .page-content:before,
 .page-content:after {
-	content: "";
+	background-image: url("/public/grid.svg");
+	z-index: 1;
 	position: absolute;
+	width: 100%;
+	height: 100%;
 	top: 0;
-	bottom: 0;
-	width: calc((100% - 1200px) / 2);
-	background-color: #fafafa;
-	border: 1px solid #f4f4f5;
+	opacity: 0.4;
+	filter: invert(1);
+	
+	
 }
 
 .page-content:before {
 	left: 0;
-	z-index: 1;
+	background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+	position: absolute;
+	/* content: ""; */
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	filter: blur(100px) saturate(150%);
+  	opacity: 0.08;
+	background-image: radial-gradient(
+      at 27% 37%,
+      hsla(215, 98%, 61%, 1) 0px,
+      transparent 0%
+    ),
+    radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),
+    radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
+    radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
 }
 
 .page-content:after {
 	right: 0;
-	z-index: 1;
+	z-index : 1;
+	
 }
 
 .content-wrapper {
-	max-width: 1000px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 
