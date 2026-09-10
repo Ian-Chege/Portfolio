@@ -43,9 +43,8 @@ Vercel deploy-preview subdomain.
 Load `/tickets` fresh — a full page load, not a client-side navigation. The
 loader mounts once, on the document it lands in.
 
-The snippet carries `data-ticket-type="online"`, so the modal opens with the
-streaming ticket selected — an online ticket is the one that makes checkout ask
-the buyer to sign in, which is the path worth exercising here.
+The event is online-only, and an online ticket is the one that makes checkout ask
+the buyer to sign in — the path worth exercising here.
 
 1. **The button.** Reads "Get Tickets", inline where the snippet sits. No popup,
    no navigation.

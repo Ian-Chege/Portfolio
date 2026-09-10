@@ -17,11 +17,12 @@ const VIEWCY = {
   // The course. The loader also accepts a slug, which is what this is — the live
   // button-label lookup is uuid-only and quietly 404s on a slug, so `data-label`
   // below supplies the text instead.
-  event: "session_americana_wit_1",
+  event: "gry_test_event",
   // The occurrence being sold.
-  occurrence: "2515f367-7fb0-4e26-8ac3-61a153daf149",
-  // Preselects the streaming ticket. An online ticket is the one that makes
-  // checkout ask the buyer to sign in, which is the path under test here.
+  occurrence: "ccea70c0-3fd5-4361-b2b5-cb056fffedab",
+  // This event sells nothing else, but naming it keeps the intent on the page:
+  // an online ticket is what makes checkout ask the buyer to sign in, which is
+  // the path under test here.
   ticketType: "online",
 } as const;
 
@@ -50,20 +51,20 @@ export default function TicketsPage() {
             Livestream · Concerts
           </p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            Session Americana
+            Gry test event
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            with Kris Delmhorst in the band — streaming from Barbès, Brooklyn.
+            A streamed set, watched from wherever you are.
           </p>
 
           <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
-              <dd className="mt-1 text-foreground">Thu, Sep 10 · 10:00 PM EDT</dd>
+              <dd className="mt-1 text-foreground">Sun, Sep 14 · 7:00 PM EDT</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
-              <dd className="mt-1 text-foreground">Online, wherever you are</dd>
+              <dd className="mt-1 text-foreground">Online only</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
