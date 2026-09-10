@@ -9,17 +9,17 @@ import { Footer } from "@/components/Footer";
 // loader script and drops the one <div> the snippet asks for. Everything else on
 // the page is here so the flow can be walked without a second screen.
 //
-// Repointing at another preview app means changing these three values only.
+// Repointing at another app means changing these three values only.
 const VIEWCY = {
-  // The Rails host that serves the loader. It injects its own CHECKOUT_ORIGIN and
-  // API_ORIGIN into the script body, so this host decides which app is under test.
-  loader: "https://be-pr-1959.letstestv.com/embed/checkout.js",
+  // The host that serves the loader. It injects its own checkout and API origins
+  // into the script body, so this host decides which app is under test.
+  loader: "https://www.v-u.us/backend/embed/checkout.js",
   // The course. The loader also accepts a slug, which is what this is — the live
   // button-label lookup is uuid-only and quietly 404s on a slug, so `data-label`
   // below supplies the text instead.
-  event: "session_americana_wit_1",
+  event: "woolen_affair_testing_1",
   // The occurrence being sold.
-  occurrence: "2515f367-7fb0-4e26-8ac3-61a153daf149",
+  occurrence: "c3614fda-cb2d-46fd-867f-caaabdc3fee0",
 } as const;
 
 export const metadata = {
@@ -42,28 +42,22 @@ export default function TicketsPage() {
       <Nav />
       <main className="flex-1">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-24 sm:px-8 sm:pt-28">
-          <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">
-            Live music · Brooklyn, NY
-          </p>
+          <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">Concerts</p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            Session Americana
+            Woolen Affair
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            with Kris Delmhorst in the band
+            An evening of wool, and of testing.
           </p>
 
-          <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
+          <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-2">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
-              <dd className="mt-1 text-foreground">Thu, Sep 10 · 10:00 PM</dd>
+              <dd className="mt-1 text-foreground">Thu, Sep 10 · 10:00 PM EDT</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
-              <dd className="mt-1 text-foreground">Barbès, Brooklyn</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium tracking-wide text-muted uppercase">Tickets</dt>
-              <dd className="mt-1 text-foreground">$28</dd>
+              <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
+              <dd className="mt-1 text-foreground">Damian Wieteska</dd>
             </div>
           </dl>
 

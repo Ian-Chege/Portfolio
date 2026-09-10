@@ -10,25 +10,32 @@ The page is a plain event page plus the two things the snippet asks for — a
 
 ## Before it will fully work
 
-**The host origin must be registered on the organizer's profile.** The loader
-reports a completed purchase with `postMessage`, and Viewcy names the exact
-target origin, which the browser then enforces. An unregistered origin means the
-message is never sent: checkout still works and the buyer still sees their
-thank-you, but no confirmation appears on this page — step 5 below silently fails.
+Two prerequisites, and both fail *quietly* if missed.
 
-Register it at
-`https://pr-1959.letstestv.com/manage/barbes/marketing/checkout-embed`, adding:
+**1. The modal is behind a feature gate.** `embedded_checkout` decides which
+surface the loader opens, and its off state is the popup that predates the modal.
+Until that gate is on for this environment, clicking the button opens a window
+rather than a framed modal — so steps 2, 4 and 5 below cannot be tested at all.
+The gate is read server-side and the loader is cached, so flipping it takes up to
+~65 minutes to reach this page.
+
+**2. This page's origin must be registered on the organizer's profile.** The
+loader reports a completed purchase with `postMessage`, and Viewcy names the
+exact target origin, which the browser then enforces. An unregistered origin
+means the message is never sent: checkout works, the buyer sees their thank-you,
+and no confirmation ever appears on this page — step 5 silently fails.
+
+The event is owned by `damianwieteska`, so register it at
+`https://www.v-u.us/manage/damianwieteska/marketing/checkout-embed`, adding:
 
 ```text
 https://portfolio-ianchege.vercel.app
 http://localhost:3000
 ```
 
-The preview's current list holds only `https://www.selahhub.net`, so both need
-adding. Origins are normalized scheme + host + non-default port, so
-`https://portfolio-ianchege.vercel.app/tickets` and a trailing slash both reduce
-to the same entry — but `www.` is a different origin, and so is a Vercel
-deploy-preview subdomain.
+Origins normalize to scheme + host + non-default port, so a path or a trailing
+slash reduces to the same entry — but `www.` is a different origin, and so is a
+Vercel deploy-preview subdomain.
 
 ## The flow
 
@@ -65,9 +72,10 @@ loader mounts once, on the document it lands in.
 
 ## Repointing at a different preview
 
-Change `VIEWCY.loader` to that app's Rails host — the script injects its own
-checkout and API origins server-side, so the host in that URL decides which app
-is under test. Then set `VIEWCY.event` and `VIEWCY.occurrence` to an event there,
+Change `VIEWCY.loader` to that app's host — the script injects its own checkout
+and API origins server-side, so the host in that URL decides which app is under
+test. Either the Rails host directly or the frontend's `/backend/...` proxy path
+works; both answer with the same injected origins. Then set `VIEWCY.event` and `VIEWCY.occurrence` to an event there,
 and register this page's origin on that app.
 
 `VIEWCY.event` takes a course uuid or a slug. On a slug the live button-label
