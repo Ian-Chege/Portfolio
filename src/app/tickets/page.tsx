@@ -13,13 +13,16 @@ import { Footer } from "@/components/Footer";
 const VIEWCY = {
   // The host that serves the loader. It injects its own checkout and API origins
   // into the script body, so this host decides which app is under test.
-  loader: "https://www.v-u.us/backend/embed/checkout.js",
+  loader: "https://be-pr-1966.letstestv.com/embed/checkout.js",
   // The course. The loader also accepts a slug, which is what this is — the live
   // button-label lookup is uuid-only and quietly 404s on a slug, so `data-label`
   // below supplies the text instead.
-  event: "woolen_affair_testing_1",
+  event: "session_americana_wit_1",
   // The occurrence being sold.
-  occurrence: "c3614fda-cb2d-46fd-867f-caaabdc3fee0",
+  occurrence: "2515f367-7fb0-4e26-8ac3-61a153daf149",
+  // Preselects the streaming ticket. An online ticket is the one that makes
+  // checkout ask the buyer to sign in, which is the path under test here.
+  ticketType: "online",
 } as const;
 
 export const metadata = {
@@ -30,10 +33,11 @@ export const metadata = {
 
 const CHECKS = [
   "The button reads “Get Tickets” and sits inline — no popup, no navigation.",
-  "Clicking it opens a modal over this page with Viewcy checkout inside it.",
-  "Tickets, buyer info and card all work inside the modal.",
+  "Clicking it opens a modal over this page with Viewcy checkout inside it, streaming ticket already selected.",
+  "A streaming ticket asks you to sign in. That happens inside the modal, and coming back from it leaves your basket where it was.",
+  "Buyer info and card both work in the frame, three frames deep for 3DS.",
   "On success the thank-you screen renders inside the modal and stays there.",
-  "Closing the modal (×, Escape, or the backdrop) returns you to this page, scrolled where you left it, with a confirmation where the button was.",
+  "Closing it — checkout’s own ×, Escape, or the backdrop — returns you to this page, scrolled where you left it, with a confirmation where the button was.",
 ];
 
 export default function TicketsPage() {
@@ -42,22 +46,28 @@ export default function TicketsPage() {
       <Nav />
       <main className="flex-1">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-24 sm:px-8 sm:pt-28">
-          <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">Concerts</p>
+          <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">
+            Livestream · Concerts
+          </p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            Woolen Affair
+            Session Americana
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            An evening of wool, and of testing.
+            with Kris Delmhorst in the band — streaming from Barbès, Brooklyn.
           </p>
 
-          <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-2">
+          <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
               <dd className="mt-1 text-foreground">Thu, Sep 10 · 10:00 PM EDT</dd>
             </div>
             <div>
+              <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
+              <dd className="mt-1 text-foreground">Online, wherever you are</dd>
+            </div>
+            <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
-              <dd className="mt-1 text-foreground">Damian Wieteska</dd>
+              <dd className="mt-1 text-foreground">Barbès</dd>
             </div>
           </dl>
 
@@ -68,6 +78,7 @@ export default function TicketsPage() {
               data-viewcy-checkout
               data-event={VIEWCY.event}
               data-occurrence={VIEWCY.occurrence}
+              data-ticket-type={VIEWCY.ticketType}
               data-label="Get Tickets"
             />
           </div>

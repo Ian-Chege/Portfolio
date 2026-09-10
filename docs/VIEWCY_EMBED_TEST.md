@@ -14,10 +14,11 @@ Two prerequisites, and both fail *quietly* if missed.
 
 **1. The modal is behind a feature gate.** `embedded_checkout` decides which
 surface the loader opens, and its off state is the popup that predates the modal.
-Until that gate is on for this environment, clicking the button opens a window
-rather than a framed modal — so steps 2, 4 and 5 below cannot be tested at all.
+Until that gate is on for the environment, clicking the button opens a window
+rather than a framed modal — so most of the flow below cannot be tested at all.
 The gate is read server-side and the loader is cached, so flipping it takes up to
-~65 minutes to reach this page.
+~65 minutes to reach this page. Check it by fetching the loader and reading
+`MODAL_ENABLED` out of the top of the script.
 
 **2. This page's origin must be registered on the organizer's profile.** The
 loader reports a completed purchase with `postMessage`, and Viewcy names the
@@ -25,8 +26,8 @@ exact target origin, which the browser then enforces. An unregistered origin
 means the message is never sent: checkout works, the buyer sees their thank-you,
 and no confirmation ever appears on this page — step 5 silently fails.
 
-The event is owned by `damianwieteska`, so register it at
-`https://www.v-u.us/manage/damianwieteska/marketing/checkout-embed`, adding:
+The event is owned by `barbes`, so register it at
+`https://pr-1966.letstestv.com/manage/barbes/marketing/checkout-embed`, adding:
 
 ```text
 https://portfolio-ianchege.vercel.app
@@ -42,6 +43,10 @@ Vercel deploy-preview subdomain.
 Load `/tickets` fresh — a full page load, not a client-side navigation. The
 loader mounts once, on the document it lands in.
 
+The snippet carries `data-ticket-type="online"`, so the modal opens with the
+streaming ticket selected — an online ticket is the one that makes checkout ask
+the buyer to sign in, which is the path worth exercising here.
+
 1. **The button.** Reads "Get Tickets", inline where the snippet sits. No popup,
    no navigation.
 2. **The modal.** Clicking it opens a dialog over this page with Viewcy checkout
@@ -51,17 +56,16 @@ loader mounts once, on the document it lands in.
 4. **The thank-you stays inside the modal.** This is the point of the exercise.
    Nothing closes on completion — the buyer reads their own confirmation in the
    frame, for as long as they like.
-5. **Dismiss.** The loader's `×`, Escape, or a click on the backdrop. You land
-   back on this page, scrolled where you left it, with
-   "Thanks! Your purchase is confirmed." where the button used to be.
+5. **Dismiss.** Checkout's own `×`, Escape, or a click on the backdrop — the
+   modal draws no button of its own. You land back on this page, scrolled where
+   you left it, with "Thanks! Your purchase is confirmed." where the button was.
 
 ## Worth checking while you are in there
 
 - **Escape and the backdrop** both dismiss, and both release the held tickets
   when the order was never paid for.
-- **Two `×` buttons.** The loader draws one at the top-right of the dialog; the
-  framed checkout draws its own. Both should dismiss the modal. Neither should
-  ever render another site *inside* the dialog.
+- **The one `×`.** Checkout draws it inside the frame; the modal draws none. It
+  should dismiss the modal, and never render another site *inside* the dialog.
 - **Wallets** need a real device — an iPhone in Safari or an Android in Chrome
   with a card in the wallet. The Apple Pay / Google Pay button should render and
   complete inside the modal.
