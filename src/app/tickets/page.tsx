@@ -12,19 +12,20 @@ import { Footer } from "@/components/Footer";
 // Repointing at another app means changing these three values only.
 const VIEWCY = {
   // The host that serves the loader. It injects its own checkout and API origins
-  // into the script body, so this host decides which app is under test. Production,
-  // deliberately: the same flow failed on the pr-1970 preview, and the question this
-  // page is now asking is whether that was the preview's own configuration or
-  // something every embedder hits.
-  loader: "https://backend.viewcy.com/embed/checkout.js",
+  // into the script body, so this host decides which app is under test. It has to
+  // be the pr-1970 preview: production and main are the versions the fix has not
+  // reached, so they reproduce the original bug and can isolate nothing.
+  loader: "https://be-pr-1970.letstestv.com/embed/checkout.js",
   // The course identifier — the event's URL path on Viewcy. The live button-label
   // lookup is uuid-only and quietly 404s on a slug, so `data-label` below supplies
   // the text instead.
-  event: "ching_chong_test_even",
-  // The occurrence being sold: Tue Sep 22 2026.
-  occurrence: "dfb5f8b3-8442-4287-a6dd-960933fa50b3",
-  // An online ticket is what sets the order's `user_required`, which is what makes
-  // checkout ask the buyer to sign in — the path under test here.
+  event: "michael_hearst_presen_13",
+  // The occurrence being sold: Sat Sep 12 2026, the 4pm show.
+  occurrence: "e3492f01-ab82-461b-a986-c4da949f7a19",
+  // This occurrence sells one product, and it is an online one ("Full Day - Early
+  // Bird", $10). Naming it keeps the intent on the page: an online ticket is what
+  // sets the order's `user_required`, which is what makes checkout ask the buyer to
+  // sign in — the path under test here.
   ticketType: "online",
 } as const;
 
@@ -37,7 +38,7 @@ export const metadata = {
 const CHECKS = [
   "The button reads “Get Tickets” and sits inline — no popup, no navigation.",
   "Clicking it opens a modal over this page with Viewcy checkout inside it, the ticket already selected.",
-  "An online ticket asks you to sign in. That happens in a window of its own, and coming back from it leaves your basket where it was — that return is the step that stalls.",
+  "An online ticket asks you to sign in. That happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes.",
   "Buyer info and card both work in the frame, three frames deep for 3DS.",
   "On success the thank-you screen renders inside the modal and stays there.",
   "Closing it — checkout’s own ×, Escape, or the backdrop — returns you to this page, scrolled where you left it, with a confirmation where the button was.",
@@ -53,24 +54,25 @@ export default function TicketsPage() {
             Concerts
           </p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            Ching chong test event
+            MICHAEL HEARST presents:
+            The Unusual, Extraordinary, Curious
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            A test event, watched from wherever you are.
+            An afternoon of unusual instruments, watched from wherever you are.
           </p>
 
           <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
-              <dd className="mt-1 text-foreground">Tue, Sep 22 · 7:00 PM EAT</dd>
+              <dd className="mt-1 text-foreground">Sat, Sep 12 · 4:00 PM EDT</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
-              <dd className="mt-1 text-foreground">Online</dd>
+              <dd className="mt-1 text-foreground">Online · Barbès, Brooklyn</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
-              <dd className="mt-1 text-foreground">Ice</dd>
+              <dd className="mt-1 text-foreground">Barbès</dd>
             </div>
           </dl>
 
