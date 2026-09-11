@@ -13,16 +13,17 @@ import { Footer } from "@/components/Footer";
 const VIEWCY = {
   // The host that serves the loader. It injects its own checkout and API origins
   // into the script body, so this host decides which app is under test.
-  loader: "https://be-pr-1966.letstestv.com/embed/checkout.js",
-  // The course. The loader also accepts a slug, which is what this is — the live
-  // button-label lookup is uuid-only and quietly 404s on a slug, so `data-label`
-  // below supplies the text instead.
-  event: "gry_test_event",
-  // The occurrence being sold.
-  occurrence: "ccea70c0-3fd5-4361-b2b5-cb056fffedab",
-  // This event sells nothing else, but naming it keeps the intent on the page:
-  // an online ticket is what makes checkout ask the buyer to sign in, which is
-  // the path under test here.
+  loader: "https://be-pr-1970.letstestv.com/embed/checkout.js",
+  // The course identifier — the event's URL path on Viewcy. The live button-label
+  // lookup is uuid-only and quietly 404s on a slug, so `data-label` below supplies
+  // the text instead.
+  event: "michael_hearst_presen_13",
+  // The occurrence being sold: Sat Sep 12 2026, the 4pm show.
+  occurrence: "e3492f01-ab82-461b-a986-c4da949f7a19",
+  // This occurrence sells one product, and it is an online one ("Full Day - Early
+  // Bird", $10). Naming it keeps the intent on the page: an online ticket is what
+  // sets the order's `user_required`, which is what makes checkout ask the buyer to
+  // sign in — the path under test here.
   ticketType: "online",
 } as const;
 
@@ -34,8 +35,8 @@ export const metadata = {
 
 const CHECKS = [
   "The button reads “Get Tickets” and sits inline — no popup, no navigation.",
-  "Clicking it opens a modal over this page with Viewcy checkout inside it, streaming ticket already selected.",
-  "A streaming ticket asks you to sign in. That happens inside the modal, and coming back from it leaves your basket where it was.",
+  "Clicking it opens a modal over this page with Viewcy checkout inside it, the ticket already selected.",
+  "An online ticket asks you to sign in. That happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes.",
   "Buyer info and card both work in the frame, three frames deep for 3DS.",
   "On success the thank-you screen renders inside the modal and stays there.",
   "Closing it — checkout’s own ×, Escape, or the backdrop — returns you to this page, scrolled where you left it, with a confirmation where the button was.",
@@ -48,23 +49,24 @@ export default function TicketsPage() {
       <main className="flex-1">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-24 sm:px-8 sm:pt-28">
           <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">
-            Livestream · Concerts
+            Concerts
           </p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            Gry test event
+            MICHAEL HEARST presents:
+            The Unusual, Extraordinary, Curious
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            A streamed set, watched from wherever you are.
+            An afternoon of unusual instruments, watched from wherever you are.
           </p>
 
           <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
-              <dd className="mt-1 text-foreground">Sun, Sep 14 · 7:00 PM EDT</dd>
+              <dd className="mt-1 text-foreground">Sat, Sep 12 · 4:00 PM EDT</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
-              <dd className="mt-1 text-foreground">Online only</dd>
+              <dd className="mt-1 text-foreground">Online · Barbès, Brooklyn</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
