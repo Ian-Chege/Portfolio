@@ -22,10 +22,11 @@ const VIEWCY = {
   event: "online_piano_class",
   // The occurrence being sold: Tue Sep 15 2026, 7:00 PM EDT.
   occurrence: "e417418d-662e-40c1-9162-f5dff050cea2",
-  // This occurrence offers in-person tickets only — the event page renders a single
-  // "Get tickets" button and it points at `ticketType=in-person`. Passing "online"
-  // here would ask checkout for a product the occurrence does not sell.
-  ticketType: "in-person",
+  // This occurrence sells one product, and it is an online one ("piano test classes",
+  // $20). Naming it keeps the intent on the page: an online ticket is what sets the
+  // order's `user_required`, which is what makes checkout ask the buyer to sign in —
+  // the path under test here. `in-person` returns an empty ticket list.
+  ticketType: "online",
 } as const;
 
 export const metadata = {
@@ -37,7 +38,7 @@ export const metadata = {
 const CHECKS = [
   "The button reads “Get Tickets” and sits inline — no popup, no navigation.",
   "Clicking it opens a modal over this page with Viewcy checkout inside it, the ticket already selected.",
-  "If checkout asks you to sign in, that happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes. An in-person ticket may not require it; the online ticket on an event that sells one is what forces the prompt.",
+  "An online ticket asks you to sign in. That happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes.",
   "Buyer info and card both work in the frame, three frames deep for 3DS.",
   "On success the thank-you screen renders inside the modal and stays there.",
   "Closing it — checkout’s own ×, Escape, or the backdrop — returns you to this page, scrolled where you left it, with a confirmation where the button was.",
