@@ -19,14 +19,13 @@ const VIEWCY = {
   // The course identifier — the event's URL path on Viewcy. The live button-label
   // lookup is uuid-only and quietly 404s on a slug, so `data-label` below supplies
   // the text instead.
-  event: "michael_hearst_presen_13",
-  // The occurrence being sold: Sat Sep 12 2026, the 4pm show.
-  occurrence: "e3492f01-ab82-461b-a986-c4da949f7a19",
-  // This occurrence sells one product, and it is an online one ("Full Day - Early
-  // Bird", $10). Naming it keeps the intent on the page: an online ticket is what
-  // sets the order's `user_required`, which is what makes checkout ask the buyer to
-  // sign in — the path under test here.
-  ticketType: "online",
+  event: "online_piano_class",
+  // The occurrence being sold: Tue Sep 15 2026, 7:00 PM EDT.
+  occurrence: "e417418d-662e-40c1-9162-f5dff050cea2",
+  // This occurrence offers in-person tickets only — the event page renders a single
+  // "Get tickets" button and it points at `ticketType=in-person`. Passing "online"
+  // here would ask checkout for a product the occurrence does not sell.
+  ticketType: "in-person",
 } as const;
 
 export const metadata = {
@@ -38,7 +37,7 @@ export const metadata = {
 const CHECKS = [
   "The button reads “Get Tickets” and sits inline — no popup, no navigation.",
   "Clicking it opens a modal over this page with Viewcy checkout inside it, the ticket already selected.",
-  "An online ticket asks you to sign in. That happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes.",
+  "If checkout asks you to sign in, that happens in a window of its own, and coming back from it leaves your basket where it was — that return is what PR #1970 fixes. An in-person ticket may not require it; the online ticket on an event that sells one is what forces the prompt.",
   "Buyer info and card both work in the frame, three frames deep for 3DS.",
   "On success the thank-you screen renders inside the modal and stays there.",
   "Closing it — checkout’s own ×, Escape, or the backdrop — returns you to this page, scrolled where you left it, with a confirmation where the button was.",
@@ -51,24 +50,23 @@ export default function TicketsPage() {
       <main className="flex-1">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-24 sm:px-8 sm:pt-28">
           <p className="mb-6 text-sm font-medium tracking-wide text-accent uppercase">
-            Concerts
+            Classes
           </p>
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl sm:leading-tight">
-            MICHAEL HEARST presents:
-            The Unusual, Extraordinary, Curious
+            online piano class
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            An afternoon of unusual instruments, watched from wherever you are.
+            An hour at the keys, hosted by Barbès.
           </p>
 
           <dl className="mt-10 grid gap-6 border-y border-border py-6 sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">When</dt>
-              <dd className="mt-1 text-foreground">Sat, Sep 12 · 4:00 PM EDT</dd>
+              <dd className="mt-1 text-foreground">Tue, Sep 15 · 7:00 PM EDT</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Where</dt>
-              <dd className="mt-1 text-foreground">Online · Barbès, Brooklyn</dd>
+              <dd className="mt-1 text-foreground">To be announced</dd>
             </div>
             <div>
               <dt className="text-xs font-medium tracking-wide text-muted uppercase">Presented by</dt>
